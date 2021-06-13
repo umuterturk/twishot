@@ -34,6 +34,7 @@ options = Options()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-gpu')
+options.add_argument('--disable-dev-shm-usage')
 DRIVER = 'chromedriver'
 content = """<html lang="en"><body><blockquote class="twitter-tweet"><p lang="tr" dir="ltr"><a href="https://twitter.com/aliekbererturk/status/{}"></a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></body></html>"""
 
@@ -61,12 +62,15 @@ def get_img(tweet_id):
         WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "twitter-widget-0")))
         browser.switch_to.frame(0)
         d = browser.find_element_by_xpath('/html')
+        print(str(d))
         return d.screenshot_as_png
         # screenshot = d.screenshot('{}.png'.format(tweet_id))
     except Exception as exp:
         print(tweet_id)
         print(exp)
+        raise exp
     finally:
+        print('quit')
         browser.quit()
         pass
 
